@@ -8,6 +8,8 @@ app.use(express.json());
 
 app.use("/questions", questionsRouter);
 
+// Optional Requirement
+
 app.get("/test", (req, res) => {
   return res.json("Server API is working 🚀");
 });
