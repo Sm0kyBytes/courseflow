@@ -186,4 +186,39 @@ questionsRouter.post("/:id/answers", [ValidationAnswer], async (req, res) => {
   }
 });
 
+//Optional Requirement UpVote/DownVote
+questionsRouter.post("/:id/upvote", async (req, res) => {
+  const questionId = req.params.id;
+  try {
+    const result = await connectionPool.query(
+      `insert into question_votes(question_id,vote) values($1,$2) returning *;`,
+      [questionId, 1]
+    );
+    return res.status(200).json({
+      message: "Successfully upvoted the question.",
+      data: result.rows[0],
+    });
+  } catch (error) {
+    return res.status(404).json({
+      message: "Not Found: Question not found.",
+    });
+  }
+});
+questionsRouter.post("/:id/downvote", async (req, res) => {
+  const questionId = req.params.id;
+  try {
+    const result = await connectionPool.query(
+      `insert into question_votes(question_id,vote) values($1,$2) returning *;`,
+      [questionId, -1]
+    );
+    return res.status(200).json({
+      message: "Successfully upvoted the question.",
+      data: result.rows[0],
+    });
+  } catch (error) {
+    return res.status(404).json({
+      message: "Not Found: Question not found.",
+    });
+  }
+});
 export default questionsRouter;
