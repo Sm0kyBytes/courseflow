@@ -8,8 +8,21 @@ const questionsRouter = Router();
 questionsRouter.use(express.json());
 
 questionsRouter.get("/", async (req, res) => {
+  // Optional Requirement
+  const questionTitle = req.query.title;
+  const questionCategory = req.query.category;
+  // console.log(questionTitle);
+  // console.log(questionCategory);
+  if (req.query && !questionTitle && !questionTitle) {
+    return res
+      .status(400)
+      .json({ message: "Bad Request: Invalid query parameters." });
+  }
   try {
-    const result = await connectionPool.query("select * from questions");
+    const result = await connectionPool.query(
+      `select * from questions where (category=$1 or $1 is null or $1 ='') and (title=$2 or $2 is null or $2 ='')`,
+      [questionCategory, questionTitle]
+    );
     // console.log(result);
     return res.status(200).json({
       message: "Successfully retrieved the list of questions.",
