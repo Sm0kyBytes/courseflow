@@ -8,13 +8,49 @@ const questionsRouter = Router();
 
 questionsRouter.use(express.json());
 
+/**
+ * @swagger
+ * /questions:
+ *   get:
+ *     tags: ["questions"]
+ *     description: Returns questions
+ *     parameters:
+ *      - name: category
+ *        in: query
+ *        description: Category values that need to be considered for filter
+ *        required: false
+ *        explode: true
+ *        schema:
+ *         type: string
+ *         default:
+ *         enum:
+ *          - movies
+ *          - technology
+ *          - science
+ *      - name: title
+ *        in: query
+ *        description: Title values that need to be considered for filter
+ *        required: false
+ *        explode: true
+ *        schema:
+ *         type: string
+ *         default:
+ *         input:
+ *     responses:
+ *       '200':
+ *         description: Successful operation
+ *       '400':
+ *         description: Invalid query parameter
+ *       '500':
+ *         description: Internal server error
+ */
 questionsRouter.get("/", async (req, res) => {
   // Optional Requirement
   const questionTitle = req.query.title;
   const questionCategory = req.query.category;
   // console.log(questionTitle);
   // console.log(questionCategory);
-  if (req.query && !questionTitle && !questionTitle) {
+  if (!req.query && !questionTitle && !questionTitle) {
     return res
       .status(400)
       .json({ message: "Bad Request: Invalid query parameters." });
@@ -30,7 +66,7 @@ questionsRouter.get("/", async (req, res) => {
       data: result.rows,
     });
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
@@ -54,7 +90,7 @@ questionsRouter.get("/:id", async (req, res) => {
       });
     }
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
@@ -70,7 +106,7 @@ questionsRouter.post("/", [ValidationQuestion], async (req, res) => {
       data: result.rows[0],
     });
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
@@ -111,7 +147,7 @@ questionsRouter.put("/:id", [ValidationQuestion], async (req, res) => {
       });
     }
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
@@ -142,7 +178,7 @@ questionsRouter.delete("/:id", async (req, res) => {
       });
     }
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
@@ -165,7 +201,7 @@ questionsRouter.get("/:id/answers", async (req, res) => {
       });
     }
   } catch (error) {
-    return res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
