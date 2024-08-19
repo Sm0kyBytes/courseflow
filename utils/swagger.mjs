@@ -1,4 +1,4 @@
-import { Router } from "express";
+/*import { Router } from "express";
 import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 
@@ -26,3 +26,10 @@ const swaggerSpec = swaggerJSDoc(swaggerOptions);
 swaggerRouter.use("/", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 export default swaggerRouter;
+*/
+
+import swaggerDocument from "../swagger-output.json" assert { type: "json" };
+
+export function loadSwaggerDocument() {
+  return swaggerDocument;
+}
